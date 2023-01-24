@@ -1,11 +1,11 @@
 import React from "react";
-import { LeftNavBar } from "@/components/leftNavBar";
+import { LeftNavBar } from "../components/leftNavBar";
+import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
 import { Grid } from "@mui/material";
-import { useLoadScript, Marker, GoogleMap } from "@react-google-maps/api";
 
 const mapContainerStyle = {
-  width: "100%",
-  height: "100vh",
+  height: "400px",
+  width: "800px",
 };
 
 const center = {
@@ -14,25 +14,30 @@ const center = {
 };
 
 export const MapLayout = () => {
-  const { isLoaded } = useLoadScript({
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: "AIzaSyD5vHpsJZ8FQ2cqCRo1f8Vp5UihzP78MbI", // ,
+    // ...otherOptions
   });
+  if (loadError) {
+    return <div>Error Loading..</div>;
+  }
+  if (!isLoaded) {
+    return <div>please wait map is loading ...</div>;
+  }
+
   return (
     <Grid container>
-      <Grid item xs={2} sx={{ backgroundColor: "black" }}>
+      <Grid item xs={2}>
         <LeftNavBar />
       </Grid>
       <Grid item xs={10}>
-        {isLoaded && (
-          <GoogleMap
-            center={center}
-            zoom={16}
-            mapContainerStyle={mapContainerStyle}
-          >
-            <Marker position={center} />
-          </GoogleMap>
-        )}
-        {!isLoaded && <div>Loading ...</div>}
+        <GoogleMap
+          center={center}
+          zoom={16}
+          mapContainerStyle={mapContainerStyle}
+        >
+          <Marker position={center} />
+        </GoogleMap>
       </Grid>
     </Grid>
   );

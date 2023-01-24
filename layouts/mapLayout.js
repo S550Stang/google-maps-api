@@ -19,7 +19,6 @@ const options = {
 };
 
 export const MapLayout = () => {
-  const [someState, setSomeState] = useState(false);
   const fullName = useContext(NavbarContextApi);
 
   console.log("Value", fullName);
